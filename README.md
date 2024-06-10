@@ -12,6 +12,7 @@ implementation of mathematical expression by string substitution(Variant2).
 
 - Evaluate expression: `eval_expr(expr, variables={}, user_functions={})`
 - Validate input: `validate_input(expr, variables={}, user_functions={})`
+- Visualize expression tree: `visualize_expr(expr, variables={}, user_functions={})`
 - Custom functions: Add user-defined functions via `user_functions` parameter.
 
 ## Contribution
@@ -20,6 +21,8 @@ implementation of mathematical expression by string substitution(Variant2).
 
 ## Changelog
 
+- 10.6.2024 - 1
+   - Add Visualization.
 - 8.6.2024 - 0
    - Initialization.
    - Implementation of all features.

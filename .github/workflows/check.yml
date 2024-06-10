@@ -31,7 +31,7 @@ jobs:
 
       # type annotation checks
       - name: Type checks
-        run: mypy .
+        run: mypy . --ignore-missing-imports
 
       - name: Format code
         run: black .

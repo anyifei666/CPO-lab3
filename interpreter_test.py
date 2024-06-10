@@ -1,6 +1,7 @@
 import unittest
-from interpreter import eval_expr, validate_input
+from interpreter import eval_expr, validate_input, visualize_expr
 import math
+import os
 
 
 class TestMathInterpreter(unittest.TestCase):
@@ -11,8 +12,8 @@ class TestMathInterpreter(unittest.TestCase):
         self.assertEqual(eval_expr("8 / 2"), 4)
 
     def test_variables(self):
-        self.assertEqual(eval_expr("a + b", {"a": 1, "b": 2}), 3)
-        self.assertEqual(eval_expr("a - b", {"a": 5, "b": 3}), 2)
+        self.assertEqual(eval_expr("a + b", {'a': 1, 'b': 2}), 3)
+        self.assertEqual(eval_expr("a - b", {'a': 5, 'b': 3}), 2)
 
     def test_functions(self):
         self.assertAlmostEqual(eval_expr("sin(0)"), 0)
@@ -26,7 +27,7 @@ class TestMathInterpreter(unittest.TestCase):
 
     def test_complex_expression(self):
         expr = "a + 2 - sin(-0.3) * (b - c)"
-        variables = {"a": 1, "b": 4, "c": 2}
+        variables = {'a': 1, 'b': 4, 'c': 2}
         result = eval_expr(expr, variables)
         self.assertAlmostEqual(result, 1 + 2 - math.sin(-0.3) * (4 - 2))
 
@@ -39,19 +40,25 @@ class TestMathInterpreter(unittest.TestCase):
             eval_expr("2 + (1, 2)")
 
     def test_input_validation(self):
-        self.assertTrue(
-            validate_input("a + b",
-                           {"a": 1, "b": 2},
-                           {"foo": lambda x: x * 42})
-        )
+        self.assertTrue(validate_input("a + b",
+                                       {'a': 1, 'b': 2},
+                                       {"foo": lambda x: x * 42}))
         with self.assertRaises(ValueError):
             validate_input("a + b",
-                           {"1a": 1, "b": 2})
+                           {'1a': 1, 'b': 2})
         with self.assertRaises(ValueError):
             validate_input("a + b",
-                           {"a": 1, "b": 2},
+                           {'a': 1, 'b': 2},
                            {"1foo": lambda x: x * 42})
         with self.assertRaises(ValueError):
             validate_input("a + b",
-                           {"a": 1, "b": 2},
+                           {'a': 1, 'b': 2},
                            {"foo": "not a function"})
+
+    def test_visualize_expr(self):
+        expr = "a + 2 - sin(-0.3) * (b - c)"
+        graph = visualize_expr(expr)
+        output_file = 'expression_tree_test'
+        graph.render(output_file, format='png', view=False)
+        self.assertTrue(os.path.exists(output_file + '.png'))
+        os.remove(output_file + '.png')  # Cleanup after test
