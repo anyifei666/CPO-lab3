@@ -12,11 +12,14 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v3
 
+      - name: Install Graphviz
+        run: sudo apt-get install -y graphviz
+
       - name: Install dependency
         run: pip install -r requirements.txt
 
       - name: Install development environment
-        run: pip install pytest coverage pycodestyle pyflakes mypy
+        run: pip install pytest coverage pycodestyle pyflakes mypy graphviz
       
       - name: Run tests and show coverage report
         run: |
